@@ -1,0 +1,17 @@
+PATH
+  remote: .
+  specs:
+    kitchen-image-manager (0.1.17)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  kitchen-image-manager!
+
+BUNDLED WITH
+   1.17.2

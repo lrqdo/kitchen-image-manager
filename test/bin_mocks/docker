@@ -1,0 +1,12 @@
+#!/bin/bash
+if [[ "$@" =~ push ]]; then
+  if [[ "$@" =~ ci/kitchen- ]]; then
+    echo 'You should never push kitchen images in this tool'
+    exit 1
+  fi
+  if ! [[ "$@" =~ push.*:latest ]]; then
+    echo 'You should never push something else than latest tag in this tool'
+    exit 1
+  fi
+fi
+exit 0

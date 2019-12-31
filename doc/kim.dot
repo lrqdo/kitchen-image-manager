@@ -1,0 +1,230 @@
+digraph KIM {
+  node [shape=box, color=lightblue2, style=filled];
+
+  subgraph cluster_Kim {
+    label = "kitchen_image_manager";
+
+    subgraph cluster_Kim_Commands {
+      style = filled;
+      label = "Kim::Commands";
+
+      "Kim::Commands.call";
+      "Kim::Commands.commit";
+      "Kim::Commands.converge";
+      "Kim::Commands.create";
+      "Kim::Commands.destroy";
+      "Kim::Commands.exec";
+      "Kim::Commands.generate_metadata_file";
+      "Kim::Commands.login";
+      "Kim::Commands.shutdown";
+      "Kim::Commands.start";
+      "Kim::Commands.test";
+      "Kim::Commands.usage";
+      "Kim::Commands.verify";
+    }
+
+    subgraph cluster_Kim_Utils {
+      style = filled;
+      label = "Kim::Utils";
+
+      "Kim::Utils.cookbook";
+      "Kim::Utils.generate";
+      "Kim::Utils.image";
+      "Kim::Utils.repository";
+    }
+  }
+
+  subgraph cluster_KimDocker {
+    label = "kitchen_image_manager/docker";
+
+    subgraph cluster_KimDocker_Utils {
+      style = "filled";
+      label = "KimDocker::Utils";
+
+      "KimDocker::Utils.run";
+    }
+
+    subgraph cluster_KimDocker_Registry {
+      style = "filled";
+      label = "KimDocker::Registry";
+
+      "KimDocker::Registry.login";
+    }
+
+    subgraph cluster_KimDocker_Image {
+      style = filled;
+      label = "KimDocker::Image";
+
+      "KimDocker::Image.commit";
+      "KimDocker::Image.pull";
+      "KimDocker::Image.push";
+      "KimDocker::Image.tag";
+    }
+  }
+
+  subgraph cluster_Kitchen {
+    label = "kitchen_image_manager/kitchen";
+
+    subgraph cluster_Kitchen_ {
+      style = filled;
+      label = "Kitchen";
+
+      "Kitchen.conf";
+      "Kitchen.converge";
+      "Kitchen.converge";
+      "Kitchen.create";
+      "Kitchen.destroy";
+      "Kitchen.exec";
+      "Kitchen.generate_metadata_file";
+      "Kitchen.instances";
+      "Kitchen.login";
+      "Kitchen.platforms";
+      "Kitchen.run";
+      "Kitchen.suites";
+      "Kitchen.test";
+      "Kitchen.verify";
+    }
+
+    subgraph cluster_Kitchen_Knife {
+      style = filled;
+      label = "Kitchen::Knife";
+
+      "Kitchen::Knife.cookbook_version";
+      "Kitchen::Knife.local?";
+      "Kitchen::Knife.run";
+    }
+
+    subgraph cluster_Kitchen_Platform {
+      style = filled;
+      label = "Kitchen::Platform";
+
+      "Kitchen::Platform.conf";
+      "Kitchen::Platform.docker_image";
+      "Kitchen::Platform.name";
+      "Kitchen::Platform.new";
+    }
+
+    subgraph cluster_Kitchen_Suite {
+      style = filled;
+      label = "Kitchen::Suite";
+
+      "Kitchen::Suite.conf";
+      "Kitchen::Suite.name";
+      "Kitchen::Suite.new";
+    }
+
+    subgraph cluster_Kitchen_Instance {
+      style = filled;
+      label = "Kitchen::Instance";
+
+      "Kitchen::Instance.conf";
+      "Kitchen::Instance.conf_file";
+      "Kitchen::Instance.container_id";
+      "Kitchen::Instance.flush";
+      "Kitchen::Instance.ip";
+      "Kitchen::Instance.name";
+      "Kitchen::Instance.new";
+      "Kitchen::Instance.platform";
+      "Kitchen::Instance.shutdown";
+      "Kitchen::Instance.start";
+      "Kitchen::Instance.suite";
+    }
+  }
+
+  subgraph "cluster_SemVer" {
+    label = "kitchen_image_manager/SemVer";
+
+    subgraph "cluster_SemVer_" {
+      style = filled;
+      label = "SemVer";
+
+      "SemVer.increment";
+    }
+  }
+
+  "kim" -> "Kim::Commands.call";
+  "Kim::Commands.call" -> "Kim::Commands.commit";
+  "Kim::Commands.call" -> "Kim::Commands.converge";
+  "Kim::Commands.call" -> "Kim::Commands.create";
+  "Kim::Commands.call" -> "Kim::Commands.destroy";
+  "Kim::Commands.call" -> "Kim::Commands.exec";
+  "Kim::Commands.call" -> "Kim::Commands.generate_metadata_file";
+  "Kim::Commands.call" -> "Kim::Commands.login";
+  "Kim::Commands.call" -> "Kim::Commands.shutdown";
+  "Kim::Commands.call" -> "Kim::Commands.start";
+  "Kim::Commands.call" -> "Kim::Commands.test";
+  "Kim::Commands.call" -> "Kim::Commands.usage";
+  "Kim::Commands.call" -> "Kim::Commands.verify";
+  "Kim::Commands.commit" -> "Kim::Utils.image";
+  "Kim::Commands.commit" -> "Kim::Utils.repository";
+  "Kim::Commands.commit" -> "KimDocker::Image.commit";
+  "Kim::Commands.commit" -> "KimDocker::Image.push";
+  "Kim::Commands.commit" -> "Kitchen.instances";
+  "Kim::Commands.commit" -> "Kitchen::Instance.platform";
+  "Kim::Commands.commit" -> "Kitchen::Instance.shutdown";
+  "Kim::Commands.converge" -> "Kitchen.converge";
+  "Kim::Commands.create" -> "Kitchen.create";
+  "Kim::Commands.destroy" -> "Kitchen.destroy";
+  "Kim::Commands.exec" -> "Kitchen.exec";
+  "Kim::Commands.exec" -> "Kitchen.instances";
+  "Kim::Commands.generate_metadata_file" -> "Kim::Utils.cookbook";
+  "Kim::Commands.generate_metadata_file" -> "Kitchen.generate_metadata_file";
+  "Kim::Commands.login" -> "Kitchen.instances";
+  "Kim::Commands.login" -> "Kitchen.login";
+  "Kim::Commands.login" -> "Kitchen::Instance.name";
+  "Kim::Commands.shutdown" -> "Kitchen.instances";
+  "Kim::Commands.shutdown" -> "Kitchen::Instance.shutdown";
+  "Kim::Commands.start" -> "Kitchen.instances";
+  "Kim::Commands.start" -> "Kitchen::Instance.start";
+  "Kim::Commands.test" -> "Kim::Utils.generate";
+  "Kim::Commands.test" -> "Kitchen.instances";
+  "Kim::Commands.test" -> "Kitchen.test";
+  "Kim::Commands.test" -> "Kitchen::Instance.start";
+  "Kim::Commands.verify" -> "Kitchen.verify";
+  "Kim::Utils.generate" -> "KimDocker::Image.pull";
+  "Kim::Utils.generate" -> "KimDocker::Image.tag";
+  "KimDocker::Image.commit" -> "KimDocker::Utils.run";
+  "KimDocker::Image.pull" -> "KimDocker::Registry.login";
+  "KimDocker::Image.pull" -> "KimDocker::Utils.run";
+  "KimDocker::Image.push" -> "KimDocker::Registry.login";
+  "KimDocker::Image.push" -> "KimDocker::Utils.run";
+  "KimDocker::Image.tag" -> "KimDocker::Image.pull";
+  "KimDocker::Image.tag" -> "KimDocker::Utils.run";
+  "Kitchen.converge" -> "Kitchen.run";
+  "Kitchen.create" -> "Kitchen.run";
+  "Kitchen.destroy" -> "Kitchen.run";
+  "Kitchen.exec" -> "Kitchen.run";
+  "Kitchen.exec" -> "Kitchen::Instance.conf_file";
+  "Kitchen.exec" -> "Kitchen::Instance.container_id";
+  "Kitchen.exec" -> "Kitchen::Instance.ip";
+  "Kitchen.exec" -> "Kitchen::Instance.name";
+  "Kitchen.exec" -> "Kitchen::Instance.suite";
+  "Kitchen.generate_metadata_file" -> "Kitchen::Knife.cookbook_version";
+  "Kitchen.generate_metadata_file" -> "SemVer.increment";
+  "Kitchen.instances" -> "Kitchen.platforms";
+  "Kitchen.instances" -> "Kitchen.suites";
+  "Kitchen.instances" -> "Kitchen::Instance.new";
+  "Kitchen.login" -> "Kitchen.run";
+  "Kitchen.platforms" -> "Kitchen::Platform.new";
+  "Kitchen.run" -> "Kitchen::Instance.name";
+  "Kitchen.suites" -> "Kitchen::Suite.new";
+  "Kitchen.test" -> "Kitchen.converge";
+  "Kitchen.test" -> "Kitchen.create";
+  "Kitchen.test" -> "Kitchen.verify";
+  "Kitchen.verify" -> "Kitchen.run";
+  "Kitchen::Instance.conf" -> "Kitchen.conf";
+  "Kitchen::Instance.container_id" -> "Kitchen::Instance.conf";
+  "Kitchen::Instance.new" -> "Kitchen::Platform.name";
+  "Kitchen::Instance.new" -> "Kitchen::Suite.name";
+  "Kitchen::Instance.platform" -> "Kitchen::Platform.docker_image";
+  "Kitchen::Instance.platform" -> "Kitchen::Platform.name";
+  "Kitchen::Instance.start" -> "Kitchen.destroy";
+  "Kitchen::Instance.start" -> "Kitchen.exec";
+  "Kitchen::Instance.start" -> "Kitchen::Instance.flush";
+  "Kitchen::Instance.suite" -> "Kitchen::Suite.name";
+  "Kitchen::Knife.cookbook_version" -> "Kitchen::Knife.local?";
+  "Kitchen::Knife.cookbook_version" -> "Kitchen::Knife.run";
+  "Kitchen::Platform.docker_image" -> "Kitchen::Platform.conf";
+  "Kitchen::Platform.name" -> "Kitchen::Platform.conf";
+  "Kitchen::Suite.name" -> "Kitchen::Suite.conf";
+}
